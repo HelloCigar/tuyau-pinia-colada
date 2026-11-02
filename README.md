@@ -6,12 +6,14 @@ Each named route gets option builders you pass straight to `useQuery`, `useMutat
 
 ## Install
 
-Not on npm yet. Install the release tarball from GitHub:
+Not on npm yet. Install the prebuilt `dist` branch from GitHub:
 
 ```sh
-pnpm add https://github.com/HelloCigar/tuyau-pinia-colada/releases/download/v0.1.0/tuyau-pinia-colada-0.1.0.tgz
+pnpm add github:HelloCigar/tuyau-pinia-colada#dist
 pnpm add @pinia/colada pinia @tuyau/core
 ```
+
+npm and yarn work the same way (`npm i github:HelloCigar/tuyau-pinia-colada#dist`). The `dist` branch holds only the built files, so nothing has to compile on install.
 
 Peer dependencies: `@pinia/colada` ^1.4, `@tuyau/core` ^1.0, `vue` ^3.5.
 
