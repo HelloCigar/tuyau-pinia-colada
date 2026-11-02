@@ -59,6 +59,36 @@ const routes = {
       response: { ok: true }
     },
   },
+  'users.update': {
+    methods: ['PUT'],
+    pattern: '/users/:id',
+    tokens: [
+      { old: '/users/:id', type: 0, val: 'users', end: '' },
+      { old: '/users/:id', type: 1, val: 'id', end: '' },
+    ],
+    types: placeholder as {
+      body: { name?: string }
+      paramsTuple: [string]
+      params: { id: string }
+      query: {}
+      response: { id: number; name: string }
+    },
+  },
+  'users.destroy': {
+    methods: ['DELETE'],
+    pattern: '/users/:id',
+    tokens: [
+      { old: '/users/:id', type: 0, val: 'users', end: '' },
+      { old: '/users/:id', type: 1, val: 'id', end: '' },
+    ],
+    types: placeholder as {
+      body: {}
+      paramsTuple: [string]
+      params: { id: string }
+      query: {}
+      response: { ok: true }
+    },
+  },
   'articles.index': {
     methods: ['GET', 'HEAD'],
     pattern: '/articles',
@@ -97,6 +127,8 @@ export interface ApiDefinition {
     show: Routes['users.show']
     store: Routes['users.store']
     ping: Routes['users.ping']
+    update: Routes['users.update']
+    destroy: Routes['users.destroy']
   }
   articles: {
     index: Routes['articles.index']

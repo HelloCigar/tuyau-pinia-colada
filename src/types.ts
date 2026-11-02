@@ -209,3 +209,45 @@ export type TransformToPiniaColada<T> = {
     ? EndpointNode<T[K]> & TransformToPiniaColada<Omit<T[K], EndpointKeys>>
     : TransformToPiniaColada<T[K]>
 } & DecorateRouterKeyable
+
+/* ----------------------------------------------------------------------------
+ * Inference helpers
+ * ------------------------------------------------------------------------- */
+
+type MutationOut<N> = N extends { mutationOptions: (...args: any[]) => infer O } ? O : never
+type QueryOut<N> = N extends { queryOptions: (...args: any[]) => infer O } ? O : never
+type IsNever<T> = [T] extends [never] ? true : false
+
+/**
+ * Response type of a route node, e.g. `InferData<typeof api.users.show>`
+ */
+export type InferData<N> =
+  IsNever<QueryOut<N>> extends false
+    ? QueryOut<N> extends DefineQueryOptionsTagged<infer D, any, any>
+      ? D
+      : never
+    : MutationOut<N> extends { mutation: (...args: any[]) => Promise<infer D> }
+      ? D
+      : never
+
+/**
+ * `TuyauError` type of a route node, typed from its error responses
+ */
+export type InferError<N> =
+  IsNever<QueryOut<N>> extends false
+    ? QueryOut<N> extends DefineQueryOptionsTagged<any, infer Err, any>
+      ? Err
+      : never
+    : MutationOut<N> extends { onError?: (error: infer Err, ...args: any[]) => any }
+      ? Err
+      : never
+
+/**
+ * Request input (`params`, `query`, `body`) of a route node. For mutations,
+ * this is what `mutate()` takes
+ */
+export type InferInput<N> = N extends { queryKey: (input?: infer I) => any }
+  ? I
+  : MutationOut<N> extends { mutation: (vars: infer V, ...args: any[]) => any }
+    ? V
+    : never
