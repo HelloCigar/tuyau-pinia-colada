@@ -6,9 +6,14 @@ Each named route gets option builders you pass straight to `useQuery`, `useMutat
 
 ## Install
 
+Not on npm yet. Install the release tarball from GitHub:
+
 ```sh
-pnpm add tuyau-pinia-colada @pinia/colada pinia @tuyau/core
+pnpm add https://github.com/HelloCigar/tuyau-pinia-colada/releases/download/v0.1.0/tuyau-pinia-colada-0.1.0.tgz
+pnpm add @pinia/colada pinia @tuyau/core
 ```
+
+Peer dependencies: `@pinia/colada` ^1.4, `@tuyau/core` ^1.0, `vue` ^3.5.
 
 ## Setup
 
