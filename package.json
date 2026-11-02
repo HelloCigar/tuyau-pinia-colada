@@ -1,0 +1,51 @@
+{
+  "name": "tuyau-pinia-colada",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Pinia Colada integration for Tuyau, the type-safe AdonisJS client",
+  "license": "MIT",
+  "keywords": [
+    "adonisjs",
+    "tuyau",
+    "pinia-colada",
+    "pinia",
+    "vue",
+    "typesafe"
+  ],
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "import": "./build/index.js"
+    }
+  },
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --typecheck",
+    "prepublishOnly": "pnpm build"
+  },
+  "peerDependencies": {
+    "@pinia/colada": "^1.4.0",
+    "@tuyau/core": "^1.0.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@adonisjs/core": "^7.6.0",
+    "@pinia/colada": "^1.4.9",
+    "@tuyau/core": "^1.3.0",
+    "@types/node": "^22.20.5",
+    "@vue/test-utils": "^2.5.1",
+    "happy-dom": "^21.0.4",
+    "pinia": "^4.1.0",
+    "tsup": "^9.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5",
+    "vue": "^3.5.44"
+  }
+}
