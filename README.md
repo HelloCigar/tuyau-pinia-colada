@@ -165,6 +165,37 @@ try {
 }
 ```
 
+### Validation errors in forms
+
+For routes that use a VineJS validator, Tuyau adds a typed 422 response, `{ errors: SimpleError[] }`. Each entry is `{ field, rule, message, index?, meta? }`, and nested fields use dotted names such as `items.0.sku`.
+
+`toErrorBag()` groups those errors by field, and `firstErrors()` keeps the first message of each field. Both return `{}` for anything that is not a 422 validation error, including `null`, so you can pass `error.value` directly:
+
+```vue
+<script setup lang="ts">
+import { computed, reactive } from 'vue'
+import { useMutation } from '@pinia/colada'
+import { firstErrors } from 'tuyau-pinia-colada'
+
+const form = reactive({ email: '', password: '' })
+const signup = useMutation(api.auth.signup.mutationOptions())
+const errors = computed(() => firstErrors<keyof typeof form>(signup.error.value))
+</script>
+
+<template>
+  <form @submit.prevent="signup.mutate({ body: form })">
+    <input v-model="form.email" />
+    <p v-if="errors.email">{{ errors.email }}</p>
+    <input v-model="form.password" type="password" />
+    <p v-if="errors.password">{{ errors.password }}</p>
+  </form>
+</template>
+```
+
+`toErrorBag<'email' | 'password'>(error)` returns `{ email?: string[]; password?: string[] }`. The type argument is optional; without it, keys are `string`.
+
+If your app uses another error reporter, such as JSON:API, set `validationErrorType` in `generateRegistry()` in `adonisrc.ts` so the 422 type matches. These helpers only understand the default `{ errors: [...] }` shape.
+
 ### Globally
 
 Use Pinia Colada's plugin hooks to handle errors for every query, such as a redirect on 401:
