@@ -188,5 +188,38 @@ declare function createTuyauPiniaColadaClient<Reg extends TuyauRegistry, Tree = 
     globalOptions?: TuyauRequestOptions;
 }): TransformToPiniaColada<Tree>;
 
-export { buildKey, createTuyauPiniaColadaClient, segmentsToRouteName, skipToken };
-export type { DecorateInfiniteQuery, DecorateMutation, DecorateQuery, DecorateRouterKeyable, EndpointNode, InferData, InferError, InferInput, QueryType, SkipToken, TransformToPiniaColada, TuyauBaseOptions, TuyauInfiniteBaseOptions, TuyauInfiniteQueryOptionsFn, TuyauInfiniteQueryOptionsIn, TuyauKey, TuyauMutationKey, TuyauMutationOptionsFn, TuyauMutationOptionsIn, TuyauMutationOptionsOut, TuyauQueryFilter, TuyauQueryOptionsFn, TuyauQueryOptionsIn, TuyauRequestOptions };
+/**
+ * Shape of one entry in a VineJS `SimpleErrorReporter` response,
+ * which is what Adonis returns for 422 JSON responses by default.
+ */
+interface ValidationIssue {
+    message: string;
+    field: string;
+    rule: string;
+    index?: number;
+    meta?: Record<string, any>;
+}
+/**
+ * Field name -> messages, in the order the server sent them
+ */
+type ErrorBag<Field extends string = string> = Partial<Record<Field, string[]>>;
+/**
+ * Groups the errors of a 422 VineJS validation response by field.
+ * Returns `{}` for anything else (other statuses, network errors, `null`),
+ * so it is safe to call on any `error` value.
+ *
+ * Nested fields keep VineJS's dotted names, e.g. `'items.0.name'`.
+ *
+ * @example
+ * const { error } = useMutation(api.users.store.mutationOptions())
+ * const errors = computed(() => toErrorBag<'email' | 'password'>(error.value))
+ * // errors.value.email?.[0]
+ */
+declare function toErrorBag<Field extends string = string>(error: unknown): ErrorBag<Field>;
+/**
+ * First message per field. Handy for forms that show one message under each input.
+ */
+declare function firstErrors<Field extends string = string>(error: unknown): Partial<Record<Field, string>>;
+
+export { buildKey, createTuyauPiniaColadaClient, firstErrors, segmentsToRouteName, skipToken, toErrorBag };
+export type { DecorateInfiniteQuery, DecorateMutation, DecorateQuery, DecorateRouterKeyable, EndpointNode, ErrorBag, InferData, InferError, InferInput, QueryType, SkipToken, TransformToPiniaColada, TuyauBaseOptions, TuyauInfiniteBaseOptions, TuyauInfiniteQueryOptionsFn, TuyauInfiniteQueryOptionsIn, TuyauKey, TuyauMutationKey, TuyauMutationOptionsFn, TuyauMutationOptionsIn, TuyauMutationOptionsOut, TuyauQueryFilter, TuyauQueryOptionsFn, TuyauQueryOptionsIn, TuyauRequestOptions, ValidationIssue };

@@ -126,9 +126,35 @@ function createTuyauPiniaColadaClient(options) {
   }
   return makeNode([]);
 }
+
+// src/error_bag.ts
+function issuesOf(error) {
+  if (!error || typeof error !== "object") return void 0;
+  const { status, response } = error;
+  if (status !== 422) return void 0;
+  const errors = response?.errors;
+  return Array.isArray(errors) ? errors : void 0;
+}
+function toErrorBag(error) {
+  const bag = {};
+  for (const issue of issuesOf(error) ?? []) {
+    ;
+    (bag[issue.field] ??= []).push(issue.message);
+  }
+  return bag;
+}
+function firstErrors(error) {
+  const first = {};
+  for (const issue of issuesOf(error) ?? []) {
+    first[issue.field] ??= issue.message;
+  }
+  return first;
+}
 export {
   buildKey,
   createTuyauPiniaColadaClient,
+  firstErrors,
   segmentsToRouteName,
-  skipToken
+  skipToken,
+  toErrorBag
 };
