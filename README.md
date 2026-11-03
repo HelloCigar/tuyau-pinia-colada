@@ -351,11 +351,20 @@ The page param is written into `query[pageParamKey]`, which must match a field o
 To type a prop, a store or a form from a route, use the inference helpers. They take a route node:
 
 ```ts
-import type { InferData, InferError, InferInput } from 'tuyau-pinia-colada'
+import type { InferBody, InferData, InferError, InferInput } from 'tuyau-pinia-colada'
 
 type Post = InferData<typeof api.posts.show> // response body
 type PostError = InferError<typeof api.posts.show> // TuyauError for this route
 type CreatePostInput = InferInput<typeof api.posts.store> // what mutate() takes
+type CreatePostBody = InferBody<typeof api.posts.store> // request body only
+```
+
+`InferBody` is handy to type a form's state. It is `never` for a route that takes no body.
+
+```ts
+const form = reactive<InferBody<typeof api.posts.store>>({ title: '', content: '' })
+
+createPost.mutate({ body: form })
 ```
 
 `@tuyau/core/types` also exports `ResponseOf`, `ErrorOf` and `RawRequestArgs` if you work with endpoint types directly.

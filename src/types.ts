@@ -251,3 +251,15 @@ export type InferInput<N> = N extends { queryKey: (input?: infer I) => any }
   : MutationOut<N> extends { mutation: (vars: infer V, ...args: any[]) => any }
     ? V
     : never
+
+/**
+ * Request body of a route node, e.g. `InferBody<typeof api.users.store>`.
+ * Handy to type a form's state. `never` when the route takes no body
+ */
+export type InferBody<N> = BodyOf<Exclude<InferInput<N>, void | undefined>>
+
+type BodyOf<I> = 'body' extends keyof I
+  ? I extends { body?: infer B }
+    ? Exclude<B, undefined>
+    : never
+  : never
