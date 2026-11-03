@@ -1,7 +1,7 @@
 {
   "name": "tuyau-pinia-colada",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Pinia Colada integration for Tuyau, the type-safe AdonisJS client",
   "license": "MIT",
   "keywords": [

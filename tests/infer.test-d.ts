@@ -1,6 +1,6 @@
 import { expectTypeOf, test } from 'vitest'
 import type { ErrorOf } from '@tuyau/core/types'
-import type { InferData, InferError, InferInput } from '../src/index.ts'
+import type { InferBody, InferData, InferError, InferInput } from '../src/index.ts'
 import { setup } from './helpers/index.ts'
 import type { ApiDefinition } from './helpers/fixtures.ts'
 
@@ -13,4 +13,12 @@ test('infer helpers', () => {
   expectTypeOf<InferError<typeof api.users.store>>().toEqualTypeOf<ErrorOf<ApiDefinition['users']['store']>>()
   expectTypeOf<InferInput<typeof api.users.store>>().toMatchTypeOf<{ body: { name: string } }>()
   expectTypeOf<InferInput<typeof api.users.show>>().toMatchTypeOf<{ params: { id: string } } | undefined>()
+})
+
+test('InferBody', () => {
+  expectTypeOf<InferBody<typeof api.users.store>>().toEqualTypeOf<{ name: string }>()
+  expectTypeOf<InferBody<typeof api.users.update>>().toEqualTypeOf<{ name?: string }>()
+  expectTypeOf<InferBody<typeof api.users.ping>>().toBeNever()
+  expectTypeOf<InferBody<typeof api.users.destroy>>().toBeNever()
+  expectTypeOf<InferBody<typeof api.users.show>>().toBeNever()
 })
