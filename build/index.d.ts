@@ -170,6 +170,14 @@ type InferInput<N> = N extends {
 } ? I : MutationOut<N> extends {
     mutation: (vars: infer V, ...args: any[]) => any;
 } ? V : never;
+/**
+ * Request body of a route node, e.g. `InferBody<typeof api.users.store>`.
+ * Handy to type a form's state. `never` when the route takes no body
+ */
+type InferBody<N> = BodyOf<Exclude<InferInput<N>, void | undefined>>;
+type BodyOf<I> = 'body' extends keyof I ? I extends {
+    body?: infer B;
+} ? Exclude<B, undefined> : never : never;
 
 /**
  * Creates a type-safe Pinia Colada client from a Tuyau client.
@@ -222,4 +230,4 @@ declare function toErrorBag<Field extends string = string>(error: unknown): Erro
 declare function firstErrors<Field extends string = string>(error: unknown): Partial<Record<Field, string>>;
 
 export { buildKey, createTuyauPiniaColadaClient, firstErrors, segmentsToRouteName, skipToken, toErrorBag };
-export type { DecorateInfiniteQuery, DecorateMutation, DecorateQuery, DecorateRouterKeyable, EndpointNode, ErrorBag, InferData, InferError, InferInput, QueryType, SkipToken, TransformToPiniaColada, TuyauBaseOptions, TuyauInfiniteBaseOptions, TuyauInfiniteQueryOptionsFn, TuyauInfiniteQueryOptionsIn, TuyauKey, TuyauMutationKey, TuyauMutationOptionsFn, TuyauMutationOptionsIn, TuyauMutationOptionsOut, TuyauQueryFilter, TuyauQueryOptionsFn, TuyauQueryOptionsIn, TuyauRequestOptions, ValidationIssue };
+export type { DecorateInfiniteQuery, DecorateMutation, DecorateQuery, DecorateRouterKeyable, EndpointNode, ErrorBag, InferBody, InferData, InferError, InferInput, QueryType, SkipToken, TransformToPiniaColada, TuyauBaseOptions, TuyauInfiniteBaseOptions, TuyauInfiniteQueryOptionsFn, TuyauInfiniteQueryOptionsIn, TuyauKey, TuyauMutationKey, TuyauMutationOptionsFn, TuyauMutationOptionsIn, TuyauMutationOptionsOut, TuyauQueryFilter, TuyauQueryOptionsFn, TuyauQueryOptionsIn, TuyauRequestOptions, ValidationIssue };

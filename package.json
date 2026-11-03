@@ -1,7 +1,7 @@
 {
   "name": "tuyau-pinia-colada",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Pinia Colada integration for Tuyau, the type-safe AdonisJS client",
   "license": "MIT",
   "keywords": [
@@ -24,6 +24,7 @@
     "build"
   ],
   "sideEffects": false,
+  "scripts": {},
   "peerDependencies": {
     "@pinia/colada": "^1.4.0",
     "@tuyau/core": "^1.0.0",
@@ -33,6 +34,5 @@
     "type": "git",
     "url": "git+https://github.com/HelloCigar/tuyau-pinia-colada.git"
   },
-  "homepage": "https://github.com/HelloCigar/tuyau-pinia-colada#readme",
-  "scripts": {}
+  "homepage": "https://github.com/HelloCigar/tuyau-pinia-colada#readme"
 }
